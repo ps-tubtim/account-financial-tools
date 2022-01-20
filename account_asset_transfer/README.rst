@@ -53,6 +53,8 @@ Given asset under construction has been created, i.e., by vendor bill.
 - Click "Transfer" button
 - Odoo will create journal entry as well as new asset(s)
 
+**Note:** You can click "Expand Asset" button for expand asset line that selects the asset profile set to be "Create an asset by product item"
+
 Bug Tracker
 ===========
 
@@ -77,6 +79,7 @@ Contributors
 * `Ecosoft <http://ecosoft.co.th>`__:
 
   * Kitti U. <kittiu@ecosoft.co.th>
+  * Pimolnat Suntian <pimolnats@ecosoft.co.th>
 
 Maintainers
 ~~~~~~~~~~~

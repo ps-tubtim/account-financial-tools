@@ -46,6 +46,7 @@ class TestAccountAssetTransfer(TestAssetManagement):
                 ].id,
                 "journal_id": cls.company_data["default_journal_purchase"].id,
                 "name": "Room - 5 Years",
+                "asset_product_item": True,
                 "method_time": "year",
                 "method_number": 5,
                 "method_period": "year",
@@ -98,15 +99,19 @@ class TestAccountAssetTransfer(TestAssetManagement):
         with transfer_form.to_asset_ids.new() as to_asset:
             to_asset.asset_name = "Asset 1"
             to_asset.asset_profile_id = self.profile_asset
-            to_asset.asset_value = 2000
+            to_asset.price_unit = 2000
+            to_asset.quantity = 1
         with transfer_form.to_asset_ids.new() as to_asset:
             to_asset.asset_name = "Asset 2"
             to_asset.asset_profile_id = self.profile_asset
-            to_asset.asset_value = 20000
+            to_asset.price_unit = 2000
+            to_asset.quantity = 10
         transfer_form.save()
+        transfer_wiz.expand_to_asset_ids()
         res = transfer_wiz.transfer()
         transfer_move = self.env["account.move"].browse(res["domain"][0][2])
         assets = transfer_move.invoice_line_ids.mapped("asset_id")
-        # 2 new assets created, and value equal to original assets
+        # 11 new assets created, and value equal to original assets
         new_assets = assets.filtered(lambda l: l.state == "draft")
+        self.assertEqual(len(new_assets), 11)
         self.assertEqual(sum(new_assets.mapped("purchase_value")), 22000)
